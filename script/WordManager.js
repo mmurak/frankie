@@ -2,7 +2,8 @@ class WordManager {
 	constructor(str) {
 		this.wordDict = {};
 		for (let w of str.split(/[\s]+/)) {
-			w = w.replace(/\.$/, "");
+			w = w.replace(/[\.'"]$/, "");
+			w = w.replace(/^['"]/, "");
 			if (w == "") continue;
 			this.wordDict[w] = "W";
 		}
