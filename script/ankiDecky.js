@@ -75,6 +75,7 @@ G.saveButton.addEventListener("click", (e) => {
 		G.modelSelector.appendChild(opt);
 	}
 	G.saveDialog.style.display = "block";
+	G.deckName.focus();
 });
 
 G.saveCSVButton.addEventListener("click", (e) => {
