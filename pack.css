@@ -1,0 +1,81 @@
+header{
+	position: sticky;
+	top: 0;
+	padding: 5px;
+	background-color: #ffffff;
+	z-index: 100;
+}
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+table td {
+	border: 0.5px solid;
+	min-width: 150px;
+	background: #ddffdd;
+}
+table tr:nth-child(odd) td {
+	background: #fff;
+}
+.chcontrols{
+	font-size: 150%;
+}
+.controls {
+	width: 48%;
+	alilgn: center;
+	background: #ccccff;
+	cursor: pointer;
+	font-size: 120%;
+}
+.controls:active {
+	box-shadow: inset 0 0 2px rgba(128, 128, 128, 0.1);
+	transform: translateY(2px);
+}
+#ssbox{
+	padding: 5px;
+}
+#spreadsheet{
+	width: 100%;
+}
+#EditDialog{
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	display: none;
+	background-color:  #ffffff;
+	z-index: 100;
+}
+#EditDialogContent{
+	margin: 20% auto;
+	width: 60%;
+	padding: 2em;
+	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2),0 7px 20px 0 rgba(0,0,0,0.17);
+	animation-name: modalopen;
+	animation-duration: 1.0s;
+}
+#SaveDialog{
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	display: none;
+	background-color:  #ffffff;
+	z-index: 100;
+}
+#SaveDialogContent{
+	margin: 20% auto;
+	width: 60%;
+	padding: 2em;
+	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2),0 7px 20px 0 rgba(0,0,0,0.17);
+	animation-name: modalopen;
+	animation-duration: 1.0s;
+}
+@keyframes modalopen {
+	from {opacity: 0}
+	to {opacity: 1}
+}

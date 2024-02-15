@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+		<title>frANKIe pick</title>
+		<link rel="shortcut icon" href="./kiwi-bird-blue.png">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<link href="./pick.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+
+	<body>
+		<header>
+			<input type="button" id="DialogOpenButton" value="Open"></input>
+		</header>
+		<div id="board"></div>
+		<div id="TextDialog">
+			<div id="TextDialogContent"">
+				<label for="TextField">Text: </label>
+				<textarea id="TextArea"></textarea>
+				<br/>
+				<input type="button" class="controls" value="Cancel" onclick="dialogCancel()"></input>
+				<input type="button" class="controls" value="OK" onclick="dialogOK()"></input>
+				<div id="SessionLink" hidden></div>
+			</div>
+		</div>
+
+		<div id="EditDialog">
+			<div id="EditDialogContent"">
+				<input type="button" value="to lower-case" onclick="convToLowercase();"></input>
+				<input type="textfield" id="DataArea"></input>
+				<br/>
+				<input type="button" class="controls" value="Cancel" onclick="eDialogCancel()"></input>
+				<input type="button" class="controls" value="OK" onclick="eDialogOK()"></input>
+			</div>
+		</div>
+	</div>
+
+	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script-->
+	<script src="./jslib/papaParse.js"></script>
+	<script src="./jslib/hammer.min.js"></script>
+	<script src="./jslib/Carousel.js"></script>
+	<script src="./script/WordManager.js"></script>
+	<script src="./script/shaker.js"></script>
+
+	</body>
+</html>
