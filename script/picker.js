@@ -1,5 +1,6 @@
 class GlobalManager {
 	constructor() {
+		this.board = document.getElementById("board");
 		this.dialogOpenButton = document.getElementById("DialogOpenButton");
 		this.textDialog = document.getElementById("TextDialog");
 		this.textDialogContent = document.getElementById("TextDialogContent");
@@ -14,7 +15,6 @@ class GlobalManager {
 
 const G = new GlobalManager();
 
-openDialog();
 
 G.textArea.setAttribute("style", "height:" + window.clientHeight + "px;");
 G.textArea.focus();
@@ -33,11 +33,11 @@ function getNextCard() {
 	if (nextWord == null) {
 		console.log("ENDED");
 		const csvData = Papa.unparse(Object.keys(G.wm.selectedList).map((e) => { return [e];}));
-		const blob = new Blob([csvData], { type: 'text/csv' })
-		const link = document.createElement('a')
-		link.href = window.URL.createObjectURL(blob)
-		link.download = 'output.csv'
-		link.click()
+		const blob = new Blob([csvData], { type: 'text/csv' });
+		const link = document.createElement('a');
+		link.href = window.URL.createObjectURL(blob);
+		link.download = 'output.csv';
+		link.click();
 	}
 	let card = document.createElement('div');
 	card.classList.add('card');
@@ -66,7 +66,9 @@ function upS() {
 
 function openDialog() {
 console.log("OPEN");
+	G.textArea.value = "";
 	G.textDialog.style.display = "block";
+	G.textArea.focus();
 }
 function dialogOK() {
 	G.textDialog.style.display = "none";

@@ -36,6 +36,11 @@ header{
 	font-size: 24pt;
 	font-family: "Times New Roman";
 }
+
+#REJECTOR{
+	float: right;
+}
+
 #TextDialog{
 	position: fixed;
 	left: 0;

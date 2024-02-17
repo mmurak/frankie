@@ -1,16 +1,21 @@
 <!doctype html>
 <html>
 	<head>
-		<title>frANKIe pick</title>
+		<title>frANKIe picker</title>
 		<link rel="shortcut icon" href="./kiwi-bird-blue.png">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-		<link href="./pick.css" rel="stylesheet" type="text/css" media="all">
+		<link href="./picker.css" rel="stylesheet" type="text/css" media="all">
 	</head>
 
 	<body>
 		<header>
-			<input type="button" id="DialogOpenButton" value="Open"></input>
+			<input type="button" id="DialogOpenButton" value="Text Entry"></input>
+			<span id="REJECTOR">
+				<label for="InRejectDB">Reject DB: 
+				<input type="file" id="InRejectDB"></input></label>
+				<input type="button" id="outRejectDB" value="Save"></input>
+			</span>
 		</header>
 		<div id="board"></div>
 		<div id="TextDialog">
@@ -40,7 +45,7 @@
 	<script src="./jslib/hammer.min.js"></script>
 	<script src="./jslib/Carousel.js"></script>
 	<script src="./script/WordManager.js"></script>
-	<script src="./script/shaker.js"></script>
+	<script src="./script/picker.js"></script>
 
 	</body>
 </html>
