@@ -10,12 +10,14 @@
 
 	<body>
 		<header>
-			<input type="button" id="DialogOpenButton" value="Text Entry"></input>
-			<span id="REJECTOR">
+			<div id="REJECTOR">
 				<label for="InRejectDB">Reject DB: 
 				<input type="file" id="InRejectDB" accept=".csv,.txt"></input></label>
 				<input type="button" id="OutRejectDB" value="Save"></input>
-			</span>
+			</div>
+			<br/>
+			<input type="button" id="DialogOpenButton" value="Text Entry"></input>
+			<input type="button" id="SaveList" value="Save picked words" onclick="savePickedWords();"></input>
 		</header>
 		<div id="board"></div>
 		<div id="TextDialog">

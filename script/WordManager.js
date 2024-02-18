@@ -13,9 +13,9 @@ class WordManager {
 			w = w.replace(/^['"]/, "");
 			w = w.replace(/^[0-9]*$/, "");
 			if (w == "") continue;
-			wl.push(w);
+			wl.push(w.toLowerCase());
 		}
-		this.wordList = this.makeUnique(wl).filter((x) => { return !(x in this.excludedDict); });
+		this.wordList = this.makeUnique(wl).filter((x) => { return !(x.toUpperCase() in this.excludedDict); });
 		this.wordList.push("-- END --");		// sentinel
 		this.currentPtr = 0;
 	}
@@ -29,9 +29,10 @@ class WordManager {
 	getNextWord() {
 		while(this.currentPtr < this.wordList.length) {
 			let currentWord = this.wordList[this.currentPtr++];
-			if (currentWord in this.rejectedList) continue;
-			if (currentWord in this.selectedList) continue;
-			if (currentWord in this.excludedDict) continue;
+			let upCase = currentWord.toUpperCase();
+			if (upCase in this.rejectedList) continue;
+			if (upCase in this.selectedList) continue;
+			if (upCase in this.excludedDict) continue;
 			return currentWord;
 		}
 		return null;
@@ -40,20 +41,21 @@ class WordManager {
 		return this.wordList[this.currentPtr - 2];	// 2 cuz there're 2 cards stick together
 	}
 	setCurrentWord(newVal) {
-		this.excludedDict[this.getCurrentWord()] = "C";
+		let cWord = this.getCurrentWord();
+		this.excludedDict[cWord.toUpperCase()] = cWord;
 		this.wordList[this.currentPtr - 2] = newVal;	// 2 cuz there're 2 cards stick together
 	}
 	disposeCurrentWord() {
 		let bptr = this.currentPtr - 2;	// 2 cuz there're 2 cards stick together
 		let rWord = this.wordList[bptr];
 		this.rejectedList[rWord] = "D";
-		this.excludedDict[rWord] = "D";
+		this.excludedDict[rWord.toUpperCase()] = rWord;
 	}
 	selectCurrentWord() {
 		let bptr = this.currentPtr - 2;	// 2 cuz there're 2 cards stick together
 		let sWord = this.wordList[bptr];
 		this.selectedList[sWord] = "S";
-		this.excludedDict[sWord] = "S";
+		this.excludedDict[sWord.toUpperCase()] = sWord;
 	}
 	undo() {
 		let bOffset;
@@ -66,7 +68,7 @@ class WordManager {
 		let prevWord = this.wordList[prevPtr];
 		delete this.selectedList[prevWord];
 		delete this.rejectedList[prevWord];
-		delete this.excludedDict[prevWord];
+		delete this.excludedDict[prevWord.toUpperCase()];
 		this.currentPtr = prevPtr;
 	}
 }

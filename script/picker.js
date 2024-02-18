@@ -40,7 +40,7 @@ function readRejectFile(file) {
 	reader.onload = (e) => {
 		let ed = Papa.parse(e.target.result).data;
 		for (let i of ed) {
-			G.wm.excludedDict[i] = "E";
+			G.wm.excludedDict[i[0].toUpperCase()] = i[0];
 		}
 	};
 	reader.readAsText(file);
@@ -49,11 +49,11 @@ function readRejectFile(file) {
 
 
 G.outRejectDB.addEventListener("click", (e) => {
-	const csvData = Papa.unparse(Object.keys(G.wm.excludedDict).map((e) => { return [e];}));
+	const csvData = Papa.unparse(Object.values(G.wm.excludedDict).map((e) => { return [e];}));
 	const blob = new Blob([csvData], { type: 'text/csv' });
 	const link = document.createElement('a');
 	link.href = window.URL.createObjectURL(blob);
-	link.download = 'excluded.csv';
+	link.download = 'excluded.txt';
 	link.click();
 });
 
@@ -62,6 +62,7 @@ let board = document.querySelector('#board');
 
 function getNextCard() {
 	let nextWord = G.wm.getNextWord();
+/*
 	if (nextWord == null) {
 		const csvData = Papa.unparse(Object.keys(G.wm.selectedList).map((e) => { return [e];}));
 		const blob = new Blob([csvData], { type: 'text/csv' });
@@ -70,11 +71,22 @@ function getNextCard() {
 		link.download = 'output.csv';
 		link.click();
 	}
+*/
 	let card = document.createElement('div');
 	card.classList.add('card');
 	card.innerHTML = nextWord;
 	return card;
 }
+
+function savePickedWords() {
+	const csvData = Papa.unparse(Object.keys(G.wm.selectedList).map((e) => { return [e];}));
+	const blob = new Blob([csvData], { type: 'text/csv' });
+	const link = document.createElement('a');
+	link.href = window.URL.createObjectURL(blob);
+	link.download = 'output.csv';
+	link.click();
+}
+
 function tap() {
 	let dat = G.wm.getCurrentWord();
 	G.dataArea.value = dat;
@@ -83,20 +95,16 @@ function tap() {
 	G.dataArea.focus();
 }
 function leftS() {
-//	console.log("left Swipe");
 	G.wm.disposeCurrentWord();
 }
 function rightS() {
-//	console.log("right Swipe");
 	G.wm.selectCurrentWord();
 }
 function upS() {
-//	console.log("up Swipe");
 	G.wm.undo();
 }
 
 function openDialog() {
-//console.log("OPEN");
 	G.textArea.value = "";
 	G.textDialog.style.display = "block";
 	G.textArea.focus();
@@ -105,16 +113,10 @@ function dialogOK() {
 	G.textDialog.style.display = "none";
 	G.wm.setText(G.textArea.value);
 	G.board.innerHTML = "";
-console.log("HERE" + G.wm);
 	G.carousel = new Carousel(board, getNextCard, leftS, rightS, upS, tap);
 }
 function dialogCancel() {
 	G.textDialog.style.display = "none";
-}
-
-function convToLowercase() {
-	let val = G.dataArea.value;
-	G.dataArea.value = val.toLowerCase();
 }
 
 function eDialogOK() {
