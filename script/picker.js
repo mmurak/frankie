@@ -8,7 +8,9 @@ class GlobalManager {
 		this.editDialogContent = document.getElementById("EditDialogContent");
 		this.dataArea = document.getElementById("DataArea");
 		this.textArea = document.getElementById("TextArea");
-		this.wm = null;	// new WordManager("The quick brown fox jumps over the lazy dog.");
+		this.inRejectDB = document.getElementById("InRejectDB");
+		this.outRejectDB = document.getElementById("OutRejectDB");
+		this.wm =  new WordManager();
 		this.carousel = null;
 	}
 }
@@ -25,13 +27,42 @@ G.dialogOpenButton.addEventListener("click", (e) => {
 	openDialog();
 });
 
+G.inRejectDB.addEventListener("change", (e) => {
+	const file = e.target.files[0];
+	if (!file) {
+		return;
+	}
+	readRejectFile(file);
+});
+
+function readRejectFile(file) {
+	const reader = new FileReader();
+	reader.onload = (e) => {
+		let ed = Papa.parse(e.target.result).data;
+		for (let i of ed) {
+			G.wm.excludedDict[i] = "E";
+		}
+	};
+	reader.readAsText(file);
+}
+
+
+
+G.outRejectDB.addEventListener("click", (e) => {
+	const csvData = Papa.unparse(Object.keys(G.wm.excludedDict).map((e) => { return [e];}));
+	const blob = new Blob([csvData], { type: 'text/csv' });
+	const link = document.createElement('a');
+	link.href = window.URL.createObjectURL(blob);
+	link.download = 'excluded.csv';
+	link.click();
+});
+
 let board = document.querySelector('#board');
 
 
 function getNextCard() {
 	let nextWord = G.wm.getNextWord();
 	if (nextWord == null) {
-		console.log("ENDED");
 		const csvData = Papa.unparse(Object.keys(G.wm.selectedList).map((e) => { return [e];}));
 		const blob = new Blob([csvData], { type: 'text/csv' });
 		const link = document.createElement('a');
@@ -65,14 +96,16 @@ function upS() {
 }
 
 function openDialog() {
-console.log("OPEN");
+//console.log("OPEN");
 	G.textArea.value = "";
 	G.textDialog.style.display = "block";
 	G.textArea.focus();
 }
 function dialogOK() {
 	G.textDialog.style.display = "none";
-	G.wm = new WordManager(G.textArea.value);
+	G.wm.setText(G.textArea.value);
+	G.board.innerHTML = "";
+console.log("HERE" + G.wm);
 	G.carousel = new Carousel(board, getNextCard, leftS, rightS, upS, tap);
 }
 function dialogCancel() {
