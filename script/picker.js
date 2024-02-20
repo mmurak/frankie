@@ -1,85 +1,165 @@
+class SelectorPanel {
+	constructor(panel, funcName, str) {
+		this.panel = panel;
+		this.panel.innerHTML = "";
+		this.words = str.split(/\s+/);
+		let html = "";
+		this.counter = 0;
+		this.colorManager = [];
+		for (const w of this.words) {
+			html += "<a href=\"javascript:" + funcName + "(" + this.counter + ");\" id=\"t" + this.counter + "\">" + w + "</a> ";
+			this.counter++;
+			this.colorManager.push("B");
+		}
+		this.panel.innerHTML = html;
+	}
+}
+
 class GlobalManager {
 	constructor() {
-		this.board = document.getElementById("board");
-		this.dialogOpenButton = document.getElementById("DialogOpenButton");
+		this.textEntryButton = document.getElementById("TextEntryButton");
+		this.editButton = document.getElementById("EditButton");
+		this.saveCSVButton = document.getElementById("SaveCSVButton");
+		this.mainPanel = document.getElementById("MainPanel");
 		this.textDialog = document.getElementById("TextDialog");
-		this.textDialogContent = document.getElementById("TextDialogContent");
-		this.editDialog = document.getElementById("EditDialog");
-		this.editDialogContent = document.getElementById("EditDialogContent");
-		this.dataArea = document.getElementById("DataArea");
 		this.textArea = document.getElementById("TextArea");
-		this.inRejectDB = document.getElementById("InRejectDB");
-		this.outRejectDB = document.getElementById("OutRejectDB");
-		this.wm =  new WordManager();
-		this.carousel = null;
+		this.editDialog = document.getElementById("EditDialog");
+		this.selectedWordsField = document.getElementById("SelectedWordsField");
+		this.definitionField = document.getElementById("DefinitionField");
+		this.wordArray = [];
+		this.dictionaryURL = document.getElementById("DictionaryURL");
+		this.localStorageKey = "searchURL";
+		this.defaultSearchURL = "https://ejje.weblio.jp/content/$";
 	}
 }
 
 const G = new GlobalManager();
+checkSearchURL();
 
 
-G.textArea.setAttribute("style", "height:" + window.clientHeight + "px;");
-G.textArea.focus();
-
-
-
-G.dialogOpenButton.addEventListener("click", (e) => {
-	openDialog();
-});
-
-G.inRejectDB.addEventListener("change", (e) => {
-	const file = e.target.files[0];
-	if (!file) {
-		return;
+function checkSearchURL() {
+	if ((localStorage.getItem(G.localStorageKey) == null) || (localStorage.getItem(G.localStorageKey) == "")) {
+		localStorage.setItem(G.localStorageKey, G.defaultSearchURL);
 	}
-	readRejectFile(file);
-});
+}
 
-function readRejectFile(file) {
-	const reader = new FileReader();
-	reader.onload = (e) => {
-		let ed = Papa.parse(e.target.result).data;
-		for (let i of ed) {
-			G.wm.excludedDict[i[0].toUpperCase()] = i[0];
+
+// Text entry dialog procedures  -- START --
+function textDialogOpen() {
+	G.textDialog.style.display = "block";
+	G.textArea.value = "";
+	G.textArea.focus();
+}
+
+function textDialogOK() {
+	G.selectorPanel = new SelectorPanel(G.mainPanel, "tapped", G.textArea.value);
+	G.textDialog.style.display = "none";
+	G.editButton.disabled = false;
+}
+
+function textDialogCancel() {
+	G.textDialog.style.display = "none";
+}
+// Text entry dialog procedures  -- END --
+
+// Tapping a word
+function tapped(num) {
+	const strID = "t" + num;
+	let elem = document.getElementById(strID);
+	if (G.selectorPanel.colorManager[num] == "B") {
+		elem.style.color = "rgb(255, 0, 0)";
+		G.selectorPanel.colorManager[num] = "R";
+	} else {
+		elem.style.color = "rgb(0, 0, 0)";
+		G.selectorPanel.colorManager[num] = "B";
+	}
+}
+
+// Processing dialog procedures  -- START --
+function processWords() {
+	let words = composeWords();
+	G.selectedWordsField.value = words;
+	if (G.dictionaryURL.value == "") {
+		G.dictionaryURL.value = localStorage.getItem(G.localStorageKey);
+	}
+	G.definitionField.value = "";
+	G.editDialog.style.display = "block";
+	if (words == "") {
+		G.selectedWordsField.focus();
+	} else {
+		G.definitionField.focus();
+	}
+}
+
+function composeWords() {
+	let words = "";
+	let delimiter = "";
+	for (let i = 0; i < G.selectorPanel.counter; i++) {
+		if (G.selectorPanel.colorManager[i] == "R") {
+			let treatedWord = G.selectorPanel.words[i];
+			treatedWord = treatedWord.replace(/[\.,!?'"]+$/, "");
+			treatedWord = treatedWord.replace(/^['"]+/, "");
+			words += delimiter + treatedWord;
+			delimiter = " ";
 		}
-	};
-	reader.readAsText(file);
-}
-
-
-
-G.outRejectDB.addEventListener("click", (e) => {
-	const csvData = Papa.unparse(Object.values(G.wm.excludedDict).map((e) => { return [e];}));
-	const blob = new Blob([csvData], { type: 'text/csv' });
-	const link = document.createElement('a');
-	link.href = window.URL.createObjectURL(blob);
-	link.download = 'excluded.txt';
-	link.click();
-});
-
-let board = document.querySelector('#board');
-
-
-function getNextCard() {
-	let nextWord = G.wm.getNextWord();
-/*
-	if (nextWord == null) {
-		const csvData = Papa.unparse(Object.keys(G.wm.selectedList).map((e) => { return [e];}));
-		const blob = new Blob([csvData], { type: 'text/csv' });
-		const link = document.createElement('a');
-		link.href = window.URL.createObjectURL(blob);
-		link.download = 'output.csv';
-		link.click();
 	}
-*/
-	let card = document.createElement('div');
-	card.classList.add('card');
-	card.innerHTML = nextWord;
-	return card;
+	return words;
 }
 
-function savePickedWords() {
-	const csvData = Papa.unparse(Object.keys(G.wm.selectedList).map((e) => { return [e];}));
+function eDialogOK() {
+	if (G.definitionField.value == "") {
+		if (!confirm("Definition field is blank.  Is it OK to proceed?")) {
+			return;
+		}
+	}
+	G.editDialog.style.display = "none";
+	if (G.dictionaryURL.value == "") {
+		G.dictionaryURL.value = localStorage.getItem(G.localStorageKey);
+	} else {
+		localStorage.setItem(G.localStorageKey, G.dictionaryURL.value);
+	}
+	let defArray = G.definitionField.value.split(/::/);
+	defArray.unshift(G.selectedWordsField.value);
+	G.wordArray.push(defArray);
+	setColors("R", "rgb(0, 0, 255)");
+	G.saveCSVButton.disabled = false;
+}
+
+function eDialogCancel() {
+	G.editDialog.style.display = "none";
+	if (G.dictionaryURL.value == "") {
+		G.dictionaryURL.value = localStorage.getItem(G.localStorageKey);
+	} else {
+		localStorage.setItem(G.localStorageKey, G.dictionaryURL.value);
+	}
+	setColors("R", "rgb(0, 0, 0)");
+}
+
+function setColors(fromColor, colorCode) {
+	for (let i = 0; i < G.selectorPanel.counter; i++) {
+		if (G.selectorPanel.colorManager[i] == fromColor) {
+			G.selectorPanel.colorManager[i] = "B";
+			document.getElementById("t" + i).style.color = colorCode;
+		}
+	}
+}
+
+function convToLowerCase() {
+	G.selectedWordsField.value = G.selectedWordsField.value.toLowerCase();
+}
+
+function search() {
+	let target = encodeURI(G.selectedWordsField.value);
+	let url = G.dictionaryURL.value.replace("$", target);
+	window.open(url);
+	G.definitionField.focus();
+	G.definitionField.select();
+}
+// Processing dialog procedures  -- END --
+
+// Ourpur CSV
+function saveCSV() {
+	const csvData = Papa.unparse(G.wordArray);
 	const blob = new Blob([csvData], { type: 'text/csv' });
 	const link = document.createElement('a');
 	link.href = window.URL.createObjectURL(blob);
@@ -87,44 +167,18 @@ function savePickedWords() {
 	link.click();
 }
 
-function tap() {
-	let dat = G.wm.getCurrentWord();
-	G.dataArea.value = dat;
-	G.dataArea.selectionStart = G.dataArea.selectionEnd = dat.length;
-	G.editDialog.style.display = "block";
-	G.dataArea.focus();
-}
-function leftS() {
-	G.wm.disposeCurrentWord();
-}
-function rightS() {
-	G.wm.selectCurrentWord();
-}
-function upS() {
-	G.wm.undo();
-}
-
-function openDialog() {
-	G.textArea.value = "";
-	G.textDialog.style.display = "block";
-	G.textArea.focus();
-}
-function dialogOK() {
-	G.textDialog.style.display = "none";
-	G.wm.setText(G.textArea.value);
-	G.board.innerHTML = "";
-	G.carousel = new Carousel(board, getNextCard, leftS, rightS, upS, tap);
-}
-function dialogCancel() {
-	G.textDialog.style.display = "none";
-}
-
-function eDialogOK() {
-	let newVal = G.dataArea.value;
-	G.wm.setCurrentWord(newVal);
-	G.carousel.cards[G.carousel.cards.length-1].innerHTML = newVal;
-	G.editDialog.style.display = "none";
-}
-function eDialogCancel() {
-	G.editDialog.style.display = "none";
-}
+// Some keyboard shortcuts...
+window.addEventListener("keydown", (e) => {
+	if (G.textDialog.style.display == "block") {
+		if (e.key == "Escape")  textDialogCancel();
+		if (e.key == "Enter")  textDialogOK();
+	} else if (G.editDialog.style.display == "block") {
+		if (e.key == "Escape")  eDialogCancel();
+		if (e.key == "Enter") {
+			if (e.ctrlKey)  search();
+			else eDialogOK();
+		}
+	} else {
+		processWords();
+	}
+});

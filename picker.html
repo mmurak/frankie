@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 	<head>
-		<title>frANKIe picker</title>
-		<link rel="shortcut icon" href="./kiwi-bird-blue.png">
+		<title>FRANKIE-II</title>
+		<link rel="shortcut icon" href="./pink-kiwi.png">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 		<link href="./picker.css" rel="stylesheet" type="text/css" media="all">
@@ -10,44 +10,38 @@
 
 	<body>
 		<header>
-			<div id="REJECTOR">
-				<label for="InRejectDB">Reject DB: 
-				<input type="file" id="InRejectDB" accept=".csv,.txt"></input></label>
-				<input type="button" id="OutRejectDB" value="Save"></input>
-			</div>
-			<br/>
-			<input type="button" id="DialogOpenButton" value="Text Entry"></input>
-			<input type="button" id="SaveList" value="Save picked words" onclick="savePickedWords();"></input>
+			<input type="button" id="TextEntryButton" value="Text Entry" onclick="textDialogOpen();"></input> ｜
+			<input type="button" id="EditButton" value="Process" onclick="processWords();" disabled></input>
+			<input type="button" id="SaveCSVButton" value="Save (.csv)" onclick="saveCSV();" disabled></input>
 		</header>
-		<div id="board"></div>
+		<div id="MainPanel"></div>
 		<div id="TextDialog">
 			<div id="TextDialogContent"">
 				<label for="TextField">Text: </label>
 				<textarea id="TextArea"></textarea>
 				<br/>
-				<input type="button" class="controls" value="Cancel" onclick="dialogCancel()"></input>
-				<input type="button" class="controls" value="OK" onclick="dialogOK()"></input>
-				<div id="SessionLink" hidden></div>
+				<input type="button" class="controls" value="Cancel" onclick="textDialogCancel()"></input>
+				<input type="button" class="controls" value="OK" onclick="textDialogOK()"></input>
 			</div>
 		</div>
 
 		<div id="EditDialog">
 			<div id="EditDialogContent"">
-				<input type="button" value="to lower-case" onclick="convToLowercase();"></input>
-				<input type="textfield" id="DataArea"></input>
+				<input type="button" value="to lower-case" onclick="convToLowerCase();"></input>
+				<input type="textfield" id="SelectedWordsField"></input>
 				<br/>
+				<input type="textfield" id="DictionaryURL"></input>
+				<input type="button" value="Search" onclick="search();"></input>
+				<br/>
+				<input type="textfield" id="DefinitionField"></input>
+				<br/><br/>
 				<input type="button" class="controls" value="Cancel" onclick="eDialogCancel()"></input>
-				<input type="button" class="controls" value="OK" onclick="eDialogOK()"></input>
+				<input type="button" class="controls" value="Register" onclick="eDialogOK()"></input>
 			</div>
 		</div>
 	</div>
 
-	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script-->
 	<script src="./jslib/papaParse.js"></script>
-	<script src="./jslib/hammer.min.js"></script>
-	<script src="./jslib/Carousel.js"></script>
-	<script src="./script/WordManager.js"></script>
 	<script src="./script/picker.js"></script>
-
 	</body>
 </html>
