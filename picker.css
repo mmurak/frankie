@@ -20,27 +20,14 @@ header{
 	background-color: rgb(245, 247, 250);
 }
 
-.card{
-	width: 320px;
-	height: 320px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	border-radius: 1%;
-	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-	background-color: beige;
-	transform: translateX(-50%) translateY(-50%) scale(0.95);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 24pt;
-	font-family: "Times New Roman";
+a:link {
+ color: #000000;
+ text-decoration: none;
 }
 
-#REJECTOR{
-	float: right;
+#MainPanel{
+	margin: 10px;
 }
-
 #TextDialog{
 	position: fixed;
 	left: 0;
@@ -86,4 +73,10 @@ header{
 #TextArea{
 	width: 100%;
 	height: 20em;
+}
+#DictionaryURL{
+	width: 50%;
+}
+#DefinitionField{
+	width: 100%;
 }
