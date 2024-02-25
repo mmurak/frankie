@@ -4,7 +4,7 @@ class ModelManager {
 			"Basic (and reversed card)":
 			{
 				name: "Basic (and reversed card)",
-				id: "",
+				id: "1708426958603",
 				flds: [
 					{ name: "Front" },
 					{ name: "Back" }
@@ -30,7 +30,7 @@ class ModelManager {
 			"Basic":
 			{
 				name: "Basic",
-				id: "0",
+				id: "1708427886988",
 				flds: [
 					{ name: "Front" },
 					{ name: "Back" }
@@ -51,9 +51,8 @@ class ModelManager {
 	listModels() {
 		return Object.keys(this.modelDatabase);
 	}
-	getModel(modelName, oid) {
+	getModel(modelName) {
 		let model = this.modelDatabase[modelName];
-		model.id = oid;
 		return new Model(model);
 	}
 }

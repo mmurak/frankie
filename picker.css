@@ -1,6 +1,6 @@
 html,body{
 	width: 100%;
-	height: 100%;
+	height: auto;
 	margin: 0;
 	padding: 0;
 }
@@ -23,6 +23,7 @@ header{
 a:link {
  color: #000000;
  text-decoration: none;
+ font-size: 150%;
 }
 
 #MainPanel{
@@ -66,6 +67,9 @@ a:link {
 	animation-name: modalopen;
 	animation-duration: 1.0s;
 }
+.widgets{
+	font-size: 150%;
+}
 @keyframes modalopen {
 	from {opacity: 0}
 	to {opacity: 1}
@@ -74,9 +78,19 @@ a:link {
 	width: 100%;
 	height: 20em;
 }
-#DictionaryURL{
+#DictionaryURL1{
+	width: 50%;
+}
+#DictionaryURL2{
+	width: 50%;
+}
+#DictionaryURL3{
 	width: 50%;
 }
 #DefinitionField{
 	width: 100%;
+}
+#WorkField{
+	width: 100%;
+	height: 20em;
 }

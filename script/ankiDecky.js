@@ -33,11 +33,11 @@ initSqlJs().then(function (sql) {
 	SQL = sql;
 });
 
-
 let G = new GlobalManager();
 if (localStorage.getItem(G.localStorageKey) == null) {
 	localStorage.setItem(G.localStorageKey, G.defaultSearchURL);
 }
+
 
 G.fileInput.addEventListener("change", (e) => {
 	const file = e.target.files[0];
@@ -92,9 +92,9 @@ function saveDialogOK() {
 		alert("Enter Deck name.");
 		return;
 	}
-	G.deck = new Deck(Date.now(), G.deckName.value);
-	let mm = G.modelManager.getModel(G.modelSelector.value,
-		Date.now());
+	G.deck = new Deck(hasher(G.deckName.value), G.deckName.value);
+//	G.deck = new Deck(Date.now(), G.deckName.value);
+	let mm = G.modelManager.getModel(G.modelSelector.value);
 	G.package = new Package();
 	for (const row of G.d2arr) {
 		if (row.length == 2) {
@@ -215,4 +215,17 @@ function editDialogOK() {
 
 function editDialogCancel() {
 	G.editDialog.style.display = "none";
+}
+
+function hasher(str) {
+	let hashObj = sha256.create();
+	hashObj.update(str);
+	let hex = hashObj.digest();
+	let hi = 0n
+	for (let i = 0; i < 8; i++) {
+		hi *= 256n;
+		hi +=BigInt(hex[i]);
+	}
+	hi &= 0xffffffffffffn;
+	return Number(hi);
 }

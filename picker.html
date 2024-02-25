@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>FRANKIE-II</title>
+		<title>FRANKIE picker</title>
 		<link rel="shortcut icon" href="./pink-kiwi.png">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
@@ -10,33 +10,46 @@
 
 	<body>
 		<header>
-			<input type="button" id="TextEntryButton" value="Text Entry" onclick="textDialogOpen();"></input> ｜
-			<input type="button" id="EditButton" value="Process" onclick="processWords();" disabled></input>
-			<input type="button" id="SaveCSVButton" value="Save (.csv)" onclick="saveCSV();" disabled></input>
+			<input type="button" id="TextEntryButton" class="widgets" value="Text Entry" onclick="textDialogOpen();"></input> ｜
+			<span id="NumWordsPanel" class="widgets">0</span> ｜
+			<input type="button" id="EditButton" class="widgets" value="Process" onclick="processWords();"></input> ｜
+			<input type="button" id="SaveCSVButton" class="widgets" value="Save (.csv)" onclick="saveCSV();" disabled></input>
 		</header>
 		<div id="MainPanel"></div>
 		<div id="TextDialog">
-			<div id="TextDialogContent"">
-				<label for="TextField">Text: </label>
+			<div id="TextDialogContent">
+				<label for="TextArea" class="widgets">Text: </label>
 				<textarea id="TextArea"></textarea>
 				<br/>
-				<input type="button" class="controls" value="Cancel" onclick="textDialogCancel()"></input>
-				<input type="button" class="controls" value="OK" onclick="textDialogOK()"></input>
+				<input type="button" class="widgets" value="Cancel" onclick="textDialogCancel()"></input>
+				<input type="button" class="widgets" value="OK" onclick="textDialogOK()"></input>
 			</div>
 		</div>
 
 		<div id="EditDialog">
 			<div id="EditDialogContent"">
-				<input type="button" value="to lower-case" onclick="convToLowerCase();"></input>
-				<input type="textfield" id="SelectedWordsField"></input>
+				<input type="button" class="widgets" value="to lower-case" onclick="convToLowerCase();"></input>
+				<input type="textfield" id="SelectedWordsField" class="widgets"></input>
 				<br/>
-				<input type="textfield" id="DictionaryURL"></input>
-				<input type="button" value="Search" onclick="search();"></input>
+				<input type="textfield" id="DictionaryURL1" class="widgets"></input>
+				<input type="button" value="Search" class="widgets" onclick="search1();"></input>
 				<br/>
-				<input type="textfield" id="DefinitionField"></input>
+				<input type="textfield" id="DictionaryURL2" class="widgets"></input>
+				<input type="button" value="Search" class="widgets" onclick="search2();"></input>
+				<br/>
+				<input type="textfield" id="DictionaryURL3" class="widgets"></input>
+				<input type="button" value="Search" class="widgets" onclick="search3();"></input>
 				<br/><br/>
-				<input type="button" class="controls" value="Cancel" onclick="eDialogCancel()"></input>
-				<input type="button" class="controls" value="Register" onclick="eDialogOK()"></input>
+				<input type="textfield" id="DefinitionField" class="widgets" ></input>
+				<input type="button" id="CopyButton" class="widgets" hidden value="↑" onclick="copyIt();"></input>
+				<br/>
+				<textarea id="WorkField" hidden></textarea>
+				<div id="AdditionalFieldArea"></div>
+				<br/>
+				<div>
+					<input type="button" class="widgets" value="Cancel" onclick="eDialogCancel()"></input>
+					<input type="button" class="widgets" value="Register" onclick="eDialogOK()"></input>
+				</div>
 			</div>
 		</div>
 	</div>

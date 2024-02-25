@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<title>FRANKIE editor</title>
+		<link rel="shortcut icon" href="./kiwi-bird-blue.png">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<link href="./editor.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+	<body>
+		<header>
+			<input type="file" id="FileInput" value="New Layout" accept=".csv,.txt"></input><br/>
+			<input type="button" id="NewDataButton"  class="controls" value="New Data" onclick="newData();"></input>
+			<input type="button" id="SaveCSVButton"  class="controls" value="Save CSV"></input><br/>
+		</header>
+		<div id="ssbox">
+			<div id="spreadsheet">
+				<table id="TableFrame"></table>
+			</div>
+		</div>
+
+
+		<div id="EditDialog">
+			<div id="EditDialogContent"">
+				<input type="button" id="deleteButton" style="background-color: red;color: white" value="Delete Entry" onclick="deleteEntry();"></input>
+				<label for="KeyField">Key: </label><input type="textfield" id="KeyField" disabled cols="20"></input>
+				<input type="textfield" id="EntryField" cols="20"></input>
+				<br/><br/>
+				<div id="SearchSection">
+					<input type="textfield" id="DictionaryURL1" class="widgets"></input>
+					<input type="button" value="Search" class="widgets" onclick="search1();"></input>
+					<br/>
+					<input type="textfield" id="DictionaryURL2" class="widgets"></input>
+					<input type="button" value="Search" class="widgets" onclick="search2();"></input>
+					<br/>
+					<input type="textfield" id="DictionaryURL3" class="widgets"></input>
+					<input type="button" value="Search" class="widgets" onclick="search3();"></input>
+					<br/>
+				</div>
+				<br/>
+				<input type="button" class="controls" value="Cancel" onclick="editDialogCancel()"></input>
+				<input type="button" class="controls" value="OK" onclick="editDialogOK()"></input>
+				<div id="SessionLink" hidden></div>
+			</div>
+		</div>
+
+		<script src="./jslib/papaParse.js"></script>
+		<script src="./script/editor.js"></script>
+
+	</body>
+<html>
